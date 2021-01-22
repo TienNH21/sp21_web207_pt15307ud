@@ -4,7 +4,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-function ListProduct({ data }) {
+function ListProduct({ data, setClickedRow }) {
+  const onClickHandler = (event, value) => {
+    setClickedRow(value);
+  }
+
   return (
     <div>
       <Table>
@@ -20,7 +24,13 @@ function ListProduct({ data }) {
           {
             data.map(function (value, index) {
               return (
-                <TableRow key={index}>
+                <TableRow
+                  onClick={
+                    (event) => {
+                      return onClickHandler(event, value);
+                    }
+                  }
+                  key={index}>
                   <TableCell>{value.id}</TableCell>
                   <TableCell>{value.name}</TableCell>
                   <TableCell>{value.price}</TableCell>

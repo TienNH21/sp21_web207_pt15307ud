@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import ListProduct from './components/ListProduct';
+import CreateProduct from './components/CreateProduct';
 
 function App() {
   const initValue = [
@@ -14,12 +15,20 @@ function App() {
   ];
 
   const [products, setProducts] = useState(initValue);
+  const [clickedRow, setClickedRow] = useState({
+    id: '',
+    name: '',
+    price: '',
+  });
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="sm">
-        <ListProduct data={ products } />
+        <CreateProduct clickedRow={ clickedRow } />
+        <ListProduct
+          setClickedRow={ setClickedRow }
+          data={ products } />
       </Container>
     </React.Fragment>
   );
