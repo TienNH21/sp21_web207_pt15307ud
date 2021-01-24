@@ -15,7 +15,8 @@ function App() {
   ];
 
   const [products, setProducts] = useState(initValue);
-  const [clickedRow, setClickedRow] = useState({
+  const [clickedRow, setClickedRow] = useState(-1);
+  const [formData, setFormData] = useState({
     id: '',
     name: '',
     price: '',
@@ -25,8 +26,13 @@ function App() {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="sm">
-        <CreateProduct clickedRow={ clickedRow } />
+        <CreateProduct
+          setProducts={ setProducts }
+          setFormData={ setFormData }
+          formData={ formData }
+          clickedRow={ clickedRow } />
         <ListProduct
+          setFormData={ setFormData }
           setClickedRow={ setClickedRow }
           data={ products } />
       </Container>

@@ -3,10 +3,16 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button';
 
-function ListProduct({ data, setClickedRow }) {
-  const onClickHandler = (event, value) => {
-    setClickedRow(value);
+function ListProduct({
+  data,
+  setClickedRow,
+  setFormData,
+}) {
+  const onClickHandler = (event, value, index) => {
+    setClickedRow(index);
+    setFormData(value);
   }
 
   return (
@@ -17,6 +23,7 @@ function ListProduct({ data, setClickedRow }) {
             <TableCell>Id</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Price</TableCell>
+            <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
 
@@ -27,13 +34,16 @@ function ListProduct({ data, setClickedRow }) {
                 <TableRow
                   onClick={
                     (event) => {
-                      return onClickHandler(event, value);
+                      return onClickHandler(event, value, index);
                     }
                   }
                   key={index}>
                   <TableCell>{value.id}</TableCell>
                   <TableCell>{value.name}</TableCell>
                   <TableCell>{value.price}</TableCell>
+                  <TableCell>
+                    <Button color="secondary">Delete</Button>
+                  </TableCell>
                 </TableRow>
               );
             })
