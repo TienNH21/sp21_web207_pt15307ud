@@ -9,10 +9,21 @@ function ListProduct({
   data,
   setClickedRow,
   setFormData,
+  setProducts,
 }) {
   const onClickHandler = (event, value, index) => {
     setClickedRow(index);
     setFormData(value);
+  }
+
+  const btnDeleteOnClick = (event, index) => {
+    setProducts((oldState) => {
+      let newState = oldState.filter((val, idx) => {
+        return idx != index;
+      });
+
+      return newState;
+    });
   }
 
   return (
@@ -42,7 +53,13 @@ function ListProduct({
                   <TableCell>{value.name}</TableCell>
                   <TableCell>{value.price}</TableCell>
                   <TableCell>
-                    <Button color="secondary">Delete</Button>
+                    <Button
+                      onClick={ (event) => {
+                        btnDeleteOnClick(event, index);
+                      } }
+                      color="secondary">
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               );
