@@ -17,6 +17,7 @@ function ListProduct({
   }
 
   const btnDeleteOnClick = (event, index) => {
+    event.stopPropagation();
     setProducts((oldState) => {
       let newState = oldState.filter((val, idx) => {
         return idx != index;

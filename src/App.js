@@ -42,6 +42,7 @@ function App() {
           setProducts={ setProducts }
           setFormData={ setFormData }
           formData={ formData }
+          products={ products }
           clickedRow={ clickedRow } />
         <ListProduct
           setFormData={ setFormData }

@@ -2,12 +2,14 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import { useState } from 'react';
+import axios from 'axios';
 
 function CreateProduct({
   clickedRow,
   setProducts,
   setFormData,
   formData,
+  products,
 }) {
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -17,20 +19,35 @@ function CreateProduct({
     });
   }
 
+  const createProductApi = (data) => {
+    const url = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/products';
+
+    axios({
+      method: 'POST',
+      url: url,
+      data: data,
+    }).then(
+      (response) => {
+        const { data } = response;
+        setProducts([
+          ...products,
+          data
+        ]);
+      }
+    )
+    .catch((error) => {
+      console.log(error.response);
+    });
+  }
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    setProducts(function (oldState) {
-      if (clickedRow != -1) {
-        return oldState.map((value, index) => {
-          return index == clickedRow ? formData : value;
-        });
-      }
+    if (clickedRow == -1) {
+      createProductApi(formData);
+    } else {
+      // Update: updateProductApi()
+    }
 
-      return [
-        ...oldState,
-        formData,
-      ];
-    });
   }
 
   return (
@@ -40,6 +57,7 @@ function CreateProduct({
           fullWidth
           label="Id"
           name="id"
+          disabled
           variant="filled"
           style={{ marginTop: '20px' }}
           onChange={onChangeHandler}
