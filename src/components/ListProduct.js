@@ -4,6 +4,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
+import axios from 'axios';
 
 function ListProduct({
   data,
@@ -16,14 +17,24 @@ function ListProduct({
     setFormData(value);
   }
 
-  const btnDeleteOnClick = (event, index) => {
+  const btnDeleteOnClick = (event, index, deleteId) => {
     event.stopPropagation();
-    setProducts((oldState) => {
-      let newState = oldState.filter((val, idx) => {
-        return idx != index;
-      });
+    const url = "https://5f2d045b8085690016922b50.mockapi.io/todo-list/products/" + deleteId;
+    axios({
+      method: 'DELETE',
+      url: url
+    }).then((response) => {
+      if (response.status == 200) {
+        setProducts((oldState) => {
+          let newState = oldState.filter((val, idx) => {
+            return idx != index;
+          });
 
-      return newState;
+          return newState;
+        });
+      }
+    }).catch((error) => {
+      console.log(error, error.response)
     });
   }
 
@@ -56,7 +67,7 @@ function ListProduct({
                   <TableCell>
                     <Button
                       onClick={ (event) => {
-                        btnDeleteOnClick(event, index);
+                        btnDeleteOnClick(event, index, value.id);
                       } }
                       color="secondary">
                       Delete

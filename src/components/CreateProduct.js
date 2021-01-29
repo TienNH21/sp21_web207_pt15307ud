@@ -40,12 +40,32 @@ function CreateProduct({
     });
   }
 
+  const updateProductApi = (data, updateRow, id) => {
+    const url = "https://5f2d045b8085690016922b50.mockapi.io/todo-list/products/" + id;
+    axios({
+      method: "PUT",
+      data: data,
+      url: url,
+    }).then((response) => {
+      const { data } = response;
+      setProducts((oldState) => {
+        let newState = oldState.map((value, index) => {
+          return index == updateRow ? data : value;
+        });
+        return newState;
+      });
+    }).catch((error) => {
+      console.log('error', error.response)
+    });
+  }
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
     if (clickedRow == -1) {
       createProductApi(formData);
     } else {
       // Update: updateProductApi()
+      updateProductApi(formData, clickedRow, products[clickedRow].id);
     }
 
   }
