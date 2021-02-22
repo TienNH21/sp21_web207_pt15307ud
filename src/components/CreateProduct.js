@@ -10,6 +10,7 @@ function CreateProduct({
   setFormData,
   formData,
   products,
+  btnResetOnClick,
 }) {
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -33,6 +34,11 @@ function CreateProduct({
           ...products,
           data
         ]);
+        setFormData({
+          id: '',
+          name: '',
+          price: '',
+        });
       }
     )
     .catch((error) => {
@@ -102,6 +108,15 @@ function CreateProduct({
           style={{ marginTop: '20px' }}
           type="submit"
           color="primary">Submit</Button>
+        <Button
+          style={{
+            marginTop: '20px',
+          }}
+          onClick={ btnResetOnClick }
+          color="secondary"
+          type="reset">
+          Reset Form
+        </Button>
       </form>
     </Container>
   );

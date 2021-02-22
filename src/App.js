@@ -1,56 +1,45 @@
 import './App.css';
-import { useState, useEffect } from 'react';
-import React from 'react';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import ListProduct from './components/ListProduct';
-import CreateProduct from './components/CreateProduct';
-import axios from 'axios';
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import Product from './components/Product';
+import Category from './components/category/Category';
+import Order from './components/order/Order';
 
 function App() {
-  const url = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/products';
-
-  const [products, setProducts] = useState([]);
-  const [clickedRow, setClickedRow] = useState(-1);
-  const [formData, setFormData] = useState({
-    id: '',
-    name: '',
-    price: '',
-  });
-
-  useEffect(() => {
-    console.log('Hello Poly');
-    axios({
-      method: 'GET',
-      url: url,
-    })
-      .then((response) => {
-        const { data } = response;
-        setProducts(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <CreateProduct
-          setProducts={ setProducts }
-          setFormData={ setFormData }
-          formData={ formData }
-          products={ products }
-          clickedRow={ clickedRow } />
-        <ListProduct
-          setFormData={ setFormData }
-          setClickedRow={ setClickedRow }
-          setProducts={ setProducts }
-          data={ products } />
-      </Container>
-    </React.Fragment>
+    <div>
+      <BrowserRouter>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/product">Product</Link>
+            </li>
+            <li>
+              <Link to="/category">Category</Link>
+            </li>
+            <li>
+              <Link to="/order">Order</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Switch>
+          <Route path="/product">
+            <Product />
+          </Route>
+          <Route path="/category">
+            <Category />
+          </Route>
+          <Route path="/order">
+            <Order />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </div>
   );
 }
 
