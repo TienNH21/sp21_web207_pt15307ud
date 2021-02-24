@@ -17,14 +17,14 @@ function Product() {
     price: '',
   });
 
+  const [page, setPage] = useState(1);
+  const limit = 10;
   useEffect(() => {
-    const limit = 10;
-    const params = new URLSearchParams(window.location.search);
-    const page = params.get('page') == null ? 1 : params.get('page');
-    const getListUrl = url + '?page=' + page + '&limit=' + limit;
+    const urlPhanTrang = url +
+      "?limit=" + limit + "&page=" + page;
     axios({
       method: 'GET',
-      url: getListUrl,
+      url: urlPhanTrang,
     })
       .then((response) => {
         const { data } = response;
@@ -33,7 +33,13 @@ function Product() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [
+    /*
+     * Việc kích hoạt useEffect sẽ phụ thuộc vào giá trị của các phần tử trong mảng.
+     * Nếu các phần tử trong mảng có giá trị thay đổi -> useEffect sẽ được gọi.
+     */
+    page,
+  ]);
 
   const btnResetOnClick = function (event) {
     setFormData({
@@ -43,6 +49,18 @@ function Product() {
     });
 
     setClickedRow(-1);
+  }
+
+  const trangTruoc = function () {
+    if (page == 1) {
+      return ;
+    }
+
+    setPage(page -1);
+  }
+
+  const trangSau = function () {
+    setPage(page + 1);
   }
 
   return (
@@ -61,6 +79,24 @@ function Product() {
           setClickedRow={ setClickedRow }
           setProducts={ setProducts }
           data={ products } />
+
+        <ul className="pagination">
+          <li
+            onClick={ trangTruoc }
+            className="page-item">
+            <a className="page-link">Trang trước</a>
+          </li>
+
+          <li className="page-item">
+            <a className="page-link">{ page }</a>
+          </li>
+
+          <li
+            onClick={ trangSau }
+            className="page-item">
+            <a className="page-link">Trang sau</a>
+          </li>
+        </ul>
       </Container>
     </React.Fragment>
   );

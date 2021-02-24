@@ -8,6 +8,7 @@ import {
 import Product from './components/Product';
 import Category from './components/category/Category';
 import Order from './components/order/Order';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
