@@ -9,6 +9,8 @@ import axios from 'axios';
 function Product() {
   const url = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/products';
 
+  const [danhMucId, setDanhMucId] = useState(-1);
+  const [listDanhMuc, setListDanhMuc] = useState([]);
   const [products, setProducts] = useState([]);
   const [clickedRow, setClickedRow] = useState(-1);
   const [formData, setFormData] = useState({
@@ -17,11 +19,20 @@ function Product() {
     price: '',
   });
 
+  useEffect(() => {
+    const url = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/categories/';
+    axios.get(url)
+      .then((response) => {
+        const { data } = response;
+        setListDanhMuc(data);
+      })
+  }, []);
+
   const [page, setPage] = useState(1);
   const limit = 10;
   useEffect(() => {
-    const urlPhanTrang = url +
-      "?limit=" + limit + "&page=" + page;
+    const urlPhanTrang = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/categories/' + danhMucId +
+      "/products?limit=" + limit + "&page=" + page;
     axios({
       method: 'GET',
       url: urlPhanTrang,
@@ -39,6 +50,7 @@ function Product() {
      * Nếu các phần tử trong mảng có giá trị thay đổi -> useEffect sẽ được gọi.
      */
     page,
+    danhMucId,
   ]);
 
   const btnResetOnClick = function (event) {
@@ -63,6 +75,11 @@ function Product() {
     setPage(page + 1);
   }
 
+  const danhMucOnChange = function (event) {
+    setDanhMucId(event.target.value);
+    setPage(1);
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -74,6 +91,24 @@ function Product() {
           formData={ formData }
           products={ products }
           clickedRow={ clickedRow } />
+
+        <select
+          onChange={ danhMucOnChange }
+          className="form-control">
+          <option>Chọn danh mục</option>
+          {
+            listDanhMuc.map((danhMuc, index) => {
+              return (
+                <option
+                  key={ index }
+                  value={ danhMuc.id }>
+                  { danhMuc.name }
+                </option>
+              );
+            })
+          }
+        </select>
+
         <ListProduct
           setFormData={ setFormData }
           setClickedRow={ setClickedRow }
